@@ -200,10 +200,10 @@ cde repository sync --name sparkAppRepoDev \
 ```
 cde job create --name cde_spark_job_test \
   --type spark \
-  --mount-1-resource sparkAppRepo \
+  --mount-1-resource sparkAppRepoDev \
   --executor-cores 2 \
   --executor-memory "4g" \
-  --application-file pyspark.py\
+  --application-file code/pyspark_example/pyspark-app.py\
   --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job run --name cde_spark_job_test \
@@ -215,11 +215,6 @@ cde job run --name cde_spark_job_test \
   --executor-cores 2 \
   --executor-memory "4g" \
   --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
-
-cde job run --name cde_spark_job_test \
-  --executor-cores 5 \
-  --executor-memory "8g" \
-  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 ```
 
 ## 5. Monitor
@@ -227,7 +222,24 @@ cde job run --name cde_spark_job_test \
 Navigate to the Job Runs UI / run a few CDE CLI commands to check status.
 
 ```
-cde job list --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+# List all Jobs in the Virtual Cluster:
+cde job list \
+  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+# List all jobs in the Virtual Cluster whose name is "cde_spark_job_test":
+cde job list \
+  --filter 'name[eq]cde_spark_job_test' \
+  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+# List all jobs in the Virtual Cluster whose job application file name equals "code/pyspark_example/pyspark-app.py":
+cde job list \
+  --filter 'spark.file[eq]code/pyspark_example/pyspark-app.py' \
+  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+# List all runs for Job "cde_spark_job_test":
+cde run list \
+  --filter 'job[eq]cde_spark_job_test' \
+  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 ```
 
 ## 6. Promote to higher env using API by replicating repo and redeploy
