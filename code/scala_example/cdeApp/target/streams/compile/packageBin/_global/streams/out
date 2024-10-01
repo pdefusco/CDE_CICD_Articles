@@ -1,0 +1,7 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /Users/pauldefusco/Documents/demos_github/cde_cicd_articles/code/cdeApp/target/scala-2.13/cdeapp_2.13-0.1.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WordCount$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/pauldefusco/Documents/demos_github/cde_cicd_articles/code/cdeApp/target/scala-2.13/classes/WordCount$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	WordCount.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /Users/pauldefusco/Documents/demos_github/cde_cicd_articles/code/cdeApp/target/scala-2.13/classes/WordCount.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
