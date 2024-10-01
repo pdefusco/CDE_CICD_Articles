@@ -250,23 +250,60 @@ Create and sync the same Git repo from the PRD Cluster:
 
 ```
 cde repository create --name sparkAppRepoPrd \
-  --branch main
-  --url https://github.com/pdefusco/CDE_CICD_Articles.git
-  --v-cluster-endpoint
+  --branch main \
+  --url https://github.com/pdefusco/CDE_CICD_Articles.git \
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde repository sync --name sparkAppRepoPrd \
- --vcluster-endpoint
+ --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job create --name cde_spark_job_prd \
   --type spark \
-  --mount-1-resource sparkAppRepo \
+  --mount-1-resource sparkAppRepoPrd \
   --executor-cores 2 \
   --executor-memory "4g" \
-  --application-file pyspark.py\
-  --vcluster-endpoint
+  --application-file code/pyspark_example/pyspark-app.py\
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job run --name cde_spark_job_prd \
   --executor-cores 4 \
   --executor-memory "2g" \
-  --vcluster-endpoint
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+```
+
+## 7. Build Orchestration Pipeline with Airflow
+
+```
+cde job create --name cde_spark_job_bronze \
+  --type spark \
+  --mount-1-resource sparkAppRepoDev \
+  --python-env-resource-name Python-Env-Shared \
+  --executor-cores 2 \
+  --executor-memory "4g" \
+  --application-file code/pyspark_example/airflow_pipeline/001_Lakehouse_Bronze.py\
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde job create --name cde_spark_job_silver \
+  --type spark \
+  --mount-1-resource sparkAppRepoDev \
+  --python-env-resource-name Python-Env-Shared \
+  --executor-cores 2 \
+  --executor-memory "4g" \
+  --application-file code/pyspark_example/airflow_pipeline/002_Lakehouse_Silver.py\
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde job create --name cde_spark_job_gold \
+  --type spark \
+  --mount-1-resource sparkAppRepoDev \
+  --python-env-resource-name Python-Env-Shared \
+  --executor-cores 2 \
+  --executor-memory "4g" \
+  --application-file code/pyspark_example/airflow_pipeline/003_Lakehouse_Gold.py\
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde job create --name airflow-orchestration \
+  --type airflow \
+  --mount-1-resource sparkAppRepoDev \
+  --dag-file code/pyspark_example/airflow_pipeline/004_airflow_dag_git.py\
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 ```
