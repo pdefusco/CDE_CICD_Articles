@@ -274,9 +274,16 @@ cde job run --name cde_spark_job_prd \
 ## 7. Build Orchestration Pipeline with Airflow
 
 ```
+cde job delete --name airflow-orchestration
+cde job delete --name cde_spark_job_silver
+cde job delete --name cde_spark_job_bronze
+cde job delete --name cde_spark_job_gold
+
 cde job create --name cde_spark_job_bronze \
   --type spark \
-  --mount-1-resource sparkAppRepoDev \
+  --arg pauldefusco \
+  --arg s3a://paul-aug26-buk-a3c2b50a/spark3_demo/data/pdefusco \
+  --mount-1-resource sparkAppRepoPrd \
   --python-env-resource-name Python-Env-Shared \
   --executor-cores 2 \
   --executor-memory "4g" \
@@ -285,7 +292,8 @@ cde job create --name cde_spark_job_bronze \
 
 cde job create --name cde_spark_job_silver \
   --type spark \
-  --mount-1-resource sparkAppRepoDev \
+  --arg pauldefusco \
+  --mount-1-resource sparkAppRepoPrd \
   --python-env-resource-name Python-Env-Shared \
   --executor-cores 2 \
   --executor-memory "4g" \
@@ -294,7 +302,9 @@ cde job create --name cde_spark_job_silver \
 
 cde job create --name cde_spark_job_gold \
   --type spark \
-  --mount-1-resource sparkAppRepoDev \
+  --arg pauldefusco \
+  --arg s3a://paul-aug26-buk-a3c2b50a/spark3_demo/data/pdefusco \
+  --mount-1-resource sparkAppRepoPrd \
   --python-env-resource-name Python-Env-Shared \
   --executor-cores 2 \
   --executor-memory "4g" \
@@ -303,7 +313,7 @@ cde job create --name cde_spark_job_gold \
 
 cde job create --name airflow-orchestration \
   --type airflow \
-  --mount-1-resource sparkAppRepoDev \
+  --mount-1-resource sparkAppRepoPrd \
   --dag-file code/pyspark_example/airflow_pipeline/004_airflow_dag_git.py\
   --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 ```

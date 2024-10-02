@@ -48,17 +48,16 @@ spark = SparkSession \
     .appName("BANK TRANSACTIONS BRONZE LAYER") \
     .getOrCreate()
 
-config = configparser.ConfigParser()
-config.read('code/pyspark_example/airflow_pipeline/parameters.conf')
-storageLocation=config.get("general","data_lake_name")
-print("Storage Location from Config File: ", storageLocation)
-
 username = sys.argv[1]
 print("PySpark Runtime Arg: ", sys.argv[1])
+storageLocation = sys.argv[2]
+print("PySpark Runtime Arg: ", sys.argv[2])
 
 ### RECREATE DATABASE AND TRX TABLE
 spark.sql("DROP DATABASE IF EXISTS SPARK_CATALOG.HOL_DB_{} CASCADE".format(username))
 spark.sql("CREATE DATABASE IF NOT EXISTS SPARK_CATALOG.HOL_DB_{}".format(username))
+spark.sql("DROP TABLE IF EXISTS spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0} PURGE".format(username))
+spark.sql("DROP TABLE IF EXISTS spark_catalog.HOL_DB_{0}.CUST_TABLE_{0} PURGE".format(username))
 
 
 #---------------------------------------------------

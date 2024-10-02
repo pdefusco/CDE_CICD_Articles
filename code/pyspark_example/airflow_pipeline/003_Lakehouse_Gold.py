@@ -40,18 +40,13 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 from pyspark.sql.types import *
-import sys, random, os, json, random, configparser
+import sys, random, os, json, random
 from utils import *
 
 spark = SparkSession \
     .builder \
     .appName("BANK TRANSACTIONS GOLD LAYER") \
     .getOrCreate()
-
-config = configparser.ConfigParser()
-config.read('code/pyspark_example/airflow_pipeline/parameters.conf')
-storageLocation=config.get("general","data_lake_name")
-print("Storage Location from Config File: ", storageLocation)
 
 username = sys.argv[1]
 print("PySpark Runtime Arg: ", sys.argv[1])
