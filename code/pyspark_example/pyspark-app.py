@@ -48,11 +48,11 @@ spark = SparkSession \
     .appName("BANK TRANSACTIONS BRONZE LAYER") \
     .getOrCreate()
 
-storageLocation = "s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco/icedemo"
+storageLocation = "s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco"
 username = "pauldefusco"
 
 ### LOAD HISTORICAL TRANSACTIONS FILE FROM CLOUD STORAGE
-transactionsDf = spark.read.json("{0}/trans/{1}/rawtransactions".format(storageLocation, username))
+transactionsDf = spark.read.json("{0}/icedemo/trans/{1}/rawtransactions".format(storageLocation, username))
 transactionsDf.printSchema()
 
 ### CREATE PYTHON FUNCTION TO FLATTEN PYSPARK DATAFRAME NESTED STRUCTS
@@ -81,6 +81,8 @@ transactionsDf = transactionsDf.withColumn("transaction_amount",  transactionsDf
 transactionsDf = transactionsDf.withColumn("latitude",  transactionsDf["latitude"].cast('float'))
 transactionsDf = transactionsDf.withColumn("longitude",  transactionsDf["longitude"].cast('float'))
 transactionsDf = transactionsDf.withColumn("event_ts", transactionsDf["event_ts"].cast("timestamp"))
+
+transactionsDf.show()
 
 #### Iceberg Merge Into
 
