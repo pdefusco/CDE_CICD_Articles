@@ -48,11 +48,11 @@ spark = SparkSession \
     .appName("BANK TRANSACTIONS BRONZE LAYER") \
     .getOrCreate()
 
-storageLocation = "s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco"
+storageLocation = "s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco/icedemo"
 username = "pauldefusco"
 
 ### LOAD HISTORICAL TRANSACTIONS FILE FROM CLOUD STORAGE
-transactionsDf = spark.read.json("{0}/icedemo/trans/{1}/rawtransactions".format(storageLocation, username))
+transactionsDf = spark.read.json("{0}/trans/{1}/rawtransactions".format(storageLocation, username))
 transactionsDf.printSchema()
 
 ### CREATE PYTHON FUNCTION TO FLATTEN PYSPARK DATAFRAME NESTED STRUCTS
@@ -129,5 +129,3 @@ incReadDf = spark.read\
 
 print("Incremental Report:")
 incReadDf.show()
-
-spark.sql("DROP TABLE IF EXISTS spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0} PURGE".format(username))

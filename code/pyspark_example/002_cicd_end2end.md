@@ -80,6 +80,7 @@ Create Transactions Iceberg table:
 
 ```
 spark.sql("CREATE DATABASE IF NOT EXISTS SPARK_CATALOG.HOL_DB_{}".format(username))
+spark.sql("DROP TABLE IF EXISTS spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0} PURGE".format(username))
 
 transactionsDf.writeTo("SPARK_CATALOG.HOL_DB_{0}.TRANSACTIONS_{0}".format(username)).using("iceberg").tableProperty("write.format.default", "parquet").createOrReplace()
 ```
@@ -87,7 +88,7 @@ transactionsDf.writeTo("SPARK_CATALOG.HOL_DB_{0}.TRANSACTIONS_{0}".format(userna
 Load New Batch of Transactions in Temp View:
 
 ```
-trxBatchDf = spark.read.schema("credit_card_number string, credit_card_provider string, event_ts timestamp, latitude double, longitude double, transaction_amount long, transaction_currency string, transaction_type string").json("{0}/icedemo/trans/{1}/trx_batch_1".format(storageLocation, username))
+trxBatchDf = spark.read.schema("credit_card_number string, credit_card_provider string, event_ts timestamp, latitude double, longitude double, transaction_amount long, transaction_currency string, transaction_type string").json("{0}/trans/{1}/trx_batch_1".format(storageLocation, username))
 trxBatchDf.createOrReplaceTempView("trx_batch")
 ```
 
@@ -134,7 +135,7 @@ spark.sql("SELECT * FROM spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0}.history".form
 spark.sql("SELECT * FROM spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0}.snapshots".format(username)).show()
 
 # APPEND SECOND DATA BATCH
-trxBatchDf = spark.read.schema("credit_card_number string, credit_card_provider string, event_ts timestamp, latitude double, longitude double, transaction_amount long, transaction_currency string, transaction_type string").json("{0}/icedemo/trans/{1}/trx_batch_2".format(storageLocation, username))
+trxBatchDf = spark.read.schema("credit_card_number string, credit_card_provider string, event_ts timestamp, latitude double, longitude double, transaction_amount long, transaction_currency string, transaction_type string").json("{0}/trans/{1}/trx_batch_2".format(storageLocation, username))
 trxBatchDf.writeTo("spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0}".format(username)).using("iceberg").append()
 
 # STORE FIRST AND LAST SNAPSHOT ID'S FROM SNAPSHOTS TABLE
@@ -155,9 +156,6 @@ print("Incremental Report:")
 incReadDf.show()
 ```
 
-```
-spark.sql("DROP TABLE IF EXISTS spark_catalog.HOL_DB_{0}.TRANSACTIONS_{0} PURGE".format(username))
-```
 
 Test the code as a Spark App with a Spark Submit
 
