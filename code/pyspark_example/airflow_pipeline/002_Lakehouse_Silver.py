@@ -114,8 +114,8 @@ branchSnapshotId = spark.sql("SELECT snapshot_id FROM SPARK_CATALOG.HOL_DB_{0}.H
 spark.sql("CALL spark_catalog.system.cherrypick_snapshot('SPARK_CATALOG.HOL_DB_{0}.HIST_TRX_{0}',{1})".format(username, branchSnapshotId))
 
 # DROP BRANCH
-try:
-    spark.sql("ALTER TABLE SPARK_CATALOG.HOL_DB_{0}.HIST_TRX_{0} DROP BRANCH ingestion_branch".format(username))
+#try:
+#spark.sql("ALTER TABLE SPARK_CATALOG.HOL_DB_{0}.HIST_TRX_{0} DROP BRANCH ingestion_branch".format(username))
 
 # VALIDATE THE CHANGES
 # THE TABLE ROW COUNT IN THE CURRENT TABLE STATE REFLECTS THE APPEND OPERATION - IT PREVIOSULY ONLY DID BY SELECTING THE BRANCH
