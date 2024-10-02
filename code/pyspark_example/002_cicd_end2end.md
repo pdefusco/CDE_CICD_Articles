@@ -274,15 +274,29 @@ cde job run --name cde_spark_job_prd \
 ## 7. Build Orchestration Pipeline with Airflow
 
 ```
-cde job delete --name airflow-orchestration
-cde job delete --name cde_spark_job_silver
-cde job delete --name cde_spark_job_bronze
-cde job delete --name cde_spark_job_gold
+cde job delete \
+  --name airflow-orchestration \
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde job delete \
+  --name cde_spark_job_gold
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde job delete \
+  --name cde_spark_job_silver
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde job delete \
+  --name cde_spark_job_bronze
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde repository sync --name sparkAppRepoPrd \
+ --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job create --name cde_spark_job_bronze \
   --type spark \
   --arg pauldefusco \
-  --arg s3a://paul-aug26-buk-a3c2b50a/spark3_demo/data/pdefusco \
+  --arg s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco \
   --mount-1-resource sparkAppRepoPrd \
   --python-env-resource-name Python-Env-Shared \
   --executor-cores 2 \
