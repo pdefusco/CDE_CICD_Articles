@@ -31,7 +31,7 @@ from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 from pyspark.sql.types import *
 
-storageLocation = "s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco"
+storageLocation = "s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco/icedemo"
 username = "pauldefusco"
 ```
 
@@ -39,7 +39,7 @@ No more code edits are required. Continue running each code snippet below in sep
 
 ```
 ### LOAD HISTORICAL TRANSACTIONS FILE FROM CLOUD STORAGE
-transactionsDf = spark.read.json("{0}/icedemo/trans/{1}/rawtransactions".format(storageLocation, username))
+transactionsDf = spark.read.json("{0}/trans/{1}/rawtransactions".format(storageLocation, username))
 transactionsDf.printSchema()
 ```
 
@@ -279,15 +279,15 @@ cde job delete \
   --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job delete \
-  --name cde_spark_job_gold
+  --name cde_spark_job_gold \
   --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job delete \
-  --name cde_spark_job_silver
+  --name cde_spark_job_silver \
   --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde job delete \
-  --name cde_spark_job_bronze
+  --name cde_spark_job_bronze \
   --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
 
 cde repository sync --name sparkAppRepoPrd \
@@ -296,7 +296,7 @@ cde repository sync --name sparkAppRepoPrd \
 cde job create --name cde_spark_job_bronze \
   --type spark \
   --arg pauldefusco \
-  --arg s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco \
+  --arg s3a://paul-aug26-buk-a3c2b50a/data/spark3_demo/pdefusco/icedemo \
   --mount-1-resource sparkAppRepoPrd \
   --python-env-resource-name Python-Env-Shared \
   --executor-cores 2 \

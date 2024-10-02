@@ -65,7 +65,7 @@ spark.sql("DROP TABLE IF EXISTS spark_catalog.HOL_DB_{0}.CUST_TABLE_{0} PURGE".f
 #---------------------------------------------------
 
 ### PII DIMENSION TABLE
-piiDf = spark.read.options(header='True', delimiter=',').csv("{0}/mkthol/pii/{1}/pii".format(storageLocation, username))
+piiDf = spark.read.options(header='True', delimiter=',').csv("{0}/pii/{1}/pii".format(storageLocation, username))
 
 ### CAST LAT LON AS FLOAT
 piiDf = piiDf.withColumn("address_latitude",  piiDf["address_latitude"].cast('float'))
@@ -111,7 +111,7 @@ spark.sql("""SELECT * FROM SPARK_CATALOG.HOL_DB_{0}.CUST_TABLE_REFINED_{0}""".fo
 #---------------------------------------------------
 
 ### LOAD HISTORICAL TRANSACTIONS FILE FROM CLOUD STORAGE
-transactionsDf = spark.read.json("{0}/mkthol/trans/{1}/rawtransactions".format(storageLocation, username))
+transactionsDf = spark.read.json("{0}/trans/{1}/rawtransactions".format(storageLocation, username))
 transactionsDf.printSchema()
 
 ### RUN PYTHON FUNCTION TO FLATTEN NESTED STRUCTS AND VALIDATE NEW SCHEMA
@@ -143,7 +143,7 @@ spark.sql("SELECT COUNT(*) FROM SPARK_CATALOG.HOL_DB_{0}.HIST_TRX_{0};".format(u
 #---------------------------------------------------
 
 ### TRANSACTIONS FACT TABLE
-trxBatchDf = spark.read.json("{0}/mkthol/trans/{1}/trx_batch_2".format(storageLocation, username))
+trxBatchDf = spark.read.json("{0}/trans/{1}/trx_batch_2".format(storageLocation, username))
 
 ### TRX DF SCHEMA BEFORE CASTING
 trxBatchDf.printSchema()
