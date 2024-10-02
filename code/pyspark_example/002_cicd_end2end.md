@@ -184,6 +184,14 @@ We can now create a CDE Repository in order to import the application into the V
 Create a CDE repository and create the CDE Spark Job using the contents.
 
 ```
+cde job delete \
+  --name cde_spark_job_test \
+  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde repository delete \
+  --name sparkAppRepoDev \
+  --vcluster-endpoint https://898n992w.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
 cde repository create --name sparkAppRepoDev \
   --branch main \
   --url https://github.com/pdefusco/CDE_CICD_Articles.git \
@@ -247,6 +255,14 @@ Now that the job has succeeded, import it into the PRD cluster.
 Create and sync the same Git repo from the PRD Cluster:
 
 ```
+cde job delete \
+  --name cde_spark_job_prd \
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
+cde repository delete \
+  --name sparkAppRepoPrd \
+  --vcluster-endpoint https://vtr4tm46.cde-vwkzdqwc.paul-aug.a465-9q4k.cloudera.site/dex/api/v1
+
 cde repository create --name sparkAppRepoPrd \
   --branch main \
   --url https://github.com/pdefusco/CDE_CICD_Articles.git \
