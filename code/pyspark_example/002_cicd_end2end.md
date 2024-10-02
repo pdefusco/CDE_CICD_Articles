@@ -13,16 +13,6 @@ We will prototype and test the Iceberg Merge Into and Incremental Read Operation
 
 Interactively Test the Application. Navigate to the CDE Home Page and launch a PySpark Session. Leave default settings intact.
 
-![alt text](../img/part1-cdesession-1.png)
-
-Once the Session is ready, open the "Interact" tab in order to enter your code.
-
-![alt text](../img/part1-cdesession-2.png)
-
-You can copy and paste code from the instructions into the notebook by clicking on the icon at the top right of the code cell.
-
-![alt text](../img/part1-cdesession-3.png)
-
 Copy the following cell into the notebook. Before running it, ensure that you have edited the "username" variable with your assigned user.
 
 ```
