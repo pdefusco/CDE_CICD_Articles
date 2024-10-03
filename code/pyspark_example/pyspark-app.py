@@ -82,8 +82,6 @@ transactionsDf = transactionsDf.withColumn("latitude",  transactionsDf["latitude
 transactionsDf = transactionsDf.withColumn("longitude",  transactionsDf["longitude"].cast('float'))
 transactionsDf = transactionsDf.withColumn("event_ts", transactionsDf["event_ts"].cast("timestamp"))
 
-transactionsDf.show()
-
 #### Iceberg Merge Into
 
 spark.sql("CREATE DATABASE IF NOT EXISTS SPARK_CATALOG.HOL_DB_{}".format(username))
